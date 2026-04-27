@@ -32,7 +32,6 @@ export async function fetchAppointments(): Promise<VisaAppointment[]> {
     const missionCodes = (process.env.MISSION_COUNTRY || "nld").split(",");
     const countryCode = process.env.TARGET_COUNTRY || "tur";
     const centerCode = "TRNL";
-
     const results: VisaAppointment[] = [];
 
     for (const missionCode of missionCodes) {
@@ -56,16 +55,21 @@ export async function fetchAppointments(): Promise<VisaAppointment[]> {
           })
         );
 
-        console.log(`[${missionCode.toUpperCase()}] API yanıtı:`, JSON.stringify(response.data).substring(0, 200));
+        console.log(`[${missionCode.toUpperCase()}] API yanıtı:`, JSON.stringify(response.data).substring(0, 300));
 
         if (response.data && Array.isArray(response.data)) {
-          const mapped = response.data.map((slot: any) => ({
+          const mapped: VisaAppointment[] = response.data.map((slot: any, index: number) => ({
+            id: index,
+            tracking_count: 1,
             center: slot.centerName || slot.center || `VFS ${missionCode.toUpperCase()} Istanbul`,
             mission_code: missionCode.trim(),
             country_code: countryCode,
+            visa_category: slot.visaCategory || "Tourism",
             visa_type: slot.visaCategory || slot.visa_type || "Tourism",
             status: "open",
-            last_date: slot.date || slot.slotDate || new Date().toISOString(),
+            last_checked_at: new Date().toISOString(),
+            last_open_at: slot.date || slot.slotDate || new Date().toISOString(),
+            last_available_date: slot.date || slot.slotDate || "",
           }));
           results.push(...mapped);
         }
