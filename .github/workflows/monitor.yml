@@ -24,12 +24,12 @@ jobs:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
           VFS_TOKEN: ${{ secrets.VFS_TOKEN }}
-          VISA_API_URL: https://lift-api.vfsglobal.com/appointment/slots
           TARGET_COUNTRY: tur
           MISSION_COUNTRY: nld,fra
           CITIES: Istanbul
           CHECK_INTERVAL: "*/5 * * * *"
           VISA_SUBCATEGORIES: Tourism
+          VISA_API_URL: https://lift-api.vfsglobal.com/appointment/slots
           MAX_RETRIES: "3"
           DEBUG: "false"
         run: npm start
